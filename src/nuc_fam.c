@@ -1,3 +1,4 @@
+#include <R.h>
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -12,8 +13,6 @@ int poss_tr(int a_f, int a_m, int o_g[2]); /* Possible transmission pattern */
 int trans(int phase[], int inhvec[], int m);  /* Phase and transmission */
 int fill_in(int child[2], int unknown[2], int known[2]);
 
-
-
 /* ============================ S/R-callable ================================*/
 
 /* 
@@ -25,21 +24,22 @@ int fill_in(int child[2], int unknown[2], int known[2]);
    use all but generate separate family for each case (with all other 
    sibs non-cases) (1), or
    use first case only (2).
-   Imputation of missing parental genotypes may be done either woth or 
+   Imputation of missing parental genotypes may be done either with or 
    without use of affected offspring.
 */
 
-void hap_transmit(long *n, long *ped, long *id, long *father, long *mother,
-		  long *sex, long *aff, long *if_qt, double *qt, 
-		  long *m, long *markers, 
-		  long *multiple_cases, long *impute_using_affected,
+void hap_transmit(int *n, int *ped, int *id, int *father, int *mother,
+		  int *sex, int *aff, int *if_qt, double *qt, 
+		  int *m, int *markers, 
+		  int *multiple_cases, int *impute_using_affected,
 		  char **ofname) {
   Family *first, *f, *prev;
   FILE *outfile;
-  int nn, mm, hr;
+  int nn, mm, hr, iqt;
   char *tmp;
   nn = *n;
   mm = *m;
+  iqt = *if_qt;
   if (!*if_qt) qt = (double *) 0;
   first = nuclear(nn, ped, id, father, mother, sex, aff, qt, mm, markers);
   /* Multiple case treatment */
@@ -68,8 +68,8 @@ void hap_transmit(long *n, long *ped, long *id, long *father, long *mother,
     hr = haplotype(f, mm, 1);
     /* If recombination, write error message */
     if (hr<0) {
-      fprintf(stderr, "*** Recombination/expaternity at locus %d *** ", -hr);
-      show_family(f, stderr);
+      REprintf("*** Recombination/expaternity at locus %d *** ", -hr);
+      show_family(f);
     }
     /* If no information or recombination, omit family */
     if (hr!=0) {
@@ -93,11 +93,11 @@ void hap_transmit(long *n, long *ped, long *id, long *father, long *mother,
   }
   outfile = fopen(tmp, "wb");
   if (outfile) {
-    *n = hap_write(first, mm, (int) qt, outfile);
+    *n = hap_write(first, mm, iqt, outfile);
     fclose(outfile);
   }
   else {
-    fprintf(stderr, "*** Couldn't open temporary file %s\n", tmp);
+    REprintf("*** Couldn't open temporary file %s\n", tmp);
     *n = 0;
   }
 
@@ -112,19 +112,18 @@ void hap_transmit(long *n, long *ped, long *id, long *father, long *mother,
 
   /* Memory overflow */
 
-		overflow:
+overflow:
   warn("Memory overflow while or after expanding family", f);
 
 }
 
-
 /*
-  Read haplotypes back into long arrays, and delete file
+  Read haplotypes back into int arrays, and delete file
 */
 
-void hap_read(long *n, long *ped, long *id, long *father, long *mother,
-	      long *if_qt, double *qt, 
-	      long *m, long *f_tr, long *f_un, long *m_tr, long *m_un, 
+void hap_read(int *n, int *ped, int *id, int *father, int *mother,
+	      int *if_qt, double *qt, 
+	      int *m, int *f_tr, int *f_un, int *m_tr, int *m_un, 
 	      char **ifname) {
   FILE *infile;
   int locus, mm, nn, i, ij, fr, n_read;
@@ -140,13 +139,13 @@ void hap_read(long *n, long *ped, long *id, long *father, long *mother,
   hap = (int *) calloc(mm, sizeof(int));
   for (i=0; i<nn;  i++) {
     n_read = i;
-    fr = fread(ped+i, sizeof(long), 1, infile);
+    fr = fread(ped+i, sizeof(int), 1, infile);
     if (!fr) goto end_of_file;
-    fr = fread(id+i, sizeof(long), 1, infile);
+    fr = fread(id+i, sizeof(int), 1, infile);
     if (!fr) goto end_of_file;
-    fr = fread(father+i, sizeof(long), 1, infile);
+    fr = fread(father+i, sizeof(int), 1, infile);
     if (!fr) goto end_of_file;
-    fr = fread(mother+i, sizeof(long), 1, infile);
+    fr = fread(mother+i, sizeof(int), 1, infile);
     if (!fr) goto end_of_file;
     if (qt) {
       fr = fread(qt+i, sizeof(double), 1, infile);
@@ -169,7 +168,7 @@ void hap_read(long *n, long *ped, long *id, long *father, long *mother,
   remove(*ifname);
   free(hap);
   return;
-	     end_of_file:
+end_of_file:
   remove(*ifname);
   free(hap);
   *n = n_read;
@@ -182,15 +181,15 @@ void hap_read(long *n, long *ped, long *id, long *father, long *mother,
    Break linkage-style pedfile data into a list of nuclear families
    Note that elements of mother and father arrays are set to zero when
    subjects are placed as children (one can't be a child in more than one 
-   family). Arrays are long ints because the function might be called 
+   family). Arrays are (long) ints because the function might be called 
    originally from R or S. 
 */
 
-Family *nuclear(int n, long *ped, long *mem, long *father, long *mother,
-		long *sex, long *aff_status, double *qt, 
-		int m, long *markers) {
+Family *nuclear(int n, int *ped, int *mem, int *father, int *mother,
+		int *sex, int *aff_status, double *qt, 
+		int m, int *markers) {
   int person, j, pj, twom, placed, prev_placed;
-  long p_ped, p_fat, p_mot, p_mem;
+  int p_ped, p_fat, p_mot, p_mem;
   Family *res, *f, *f2add, *f_last=NULL;
   Offspring *child, *prev;
   twom = 2*m;
@@ -276,7 +275,7 @@ Family *nuclear(int n, long *ped, long *mem, long *father, long *mother,
     }
   }
   return res;
-		overflow:
+overflow:
   warn("Memory overflow while or after storing family", f_last);
   return NULL;
 }
@@ -298,10 +297,10 @@ int hap_write(Family *first, int m, int if_qt, FILE *stream) {
       /* Generate record if affected with either transmission known */
       if (ch->affected==2 && (ch->f_tr || ch->m_tr)) {
 	i++;
-	fwrite(&f->pedigree, sizeof(long), 1, stream); /* Pedigree */
-	fwrite(&ch->id, sizeof(long), 1, stream); /*  Id */
-	fwrite(&f->father_id, sizeof(long), 1, stream); /* Father */
-	fwrite(&f->mother_id, sizeof(long), 1, stream); /* Mother */
+	fwrite(&f->pedigree, sizeof(int), 1, stream); /* Pedigree */
+	fwrite(&ch->id, sizeof(int), 1, stream); /*  Id */
+	fwrite(&f->father_id, sizeof(int), 1, stream); /* Father */
+	fwrite(&f->mother_id, sizeof(int), 1, stream); /* Mother */
 	if (if_qt) fwrite(&ch->qt, sizeof(double), 1, stream); /* QT value */
 	/* Paternal haplotypes , transmitted and untransmitted */
 	if (ch->f_tr) {
@@ -622,7 +621,6 @@ void use_only_first(Family *f) {
   }
 }
 
-
 /* Copy family record --- except for phase vectors */
 
 Family *copy_family(Family *f, int m) {
@@ -724,22 +722,22 @@ void del_child(Offspring *child) {
 
 /* Print a one-line summary of the family to a file */
 
-void show_family(Family *f, FILE *stream) {
+void show_family(Family *f) {
   Offspring *child;
   if (f) {
-    fprintf(stream, " %ld: %ld + %ld / ", 
+    REprintf(" %d: %d + %d / ", 
 	    f->pedigree, f->father_id, f->mother_id);
     for (child=f->children; child; child=child->next) {
-      fprintf(stream, " %ld", child->id);
+      REprintf(" %d", child->id);
       if (child->affected==2) 
-	fputc('*', stream);
+	REprintf("*");
       if (child->next) 
-	fputc(',', stream);
+	REprintf(",");
     }
-    fputc('\n', stream);
+    REprintf("\n");
   }
   else {
-    fputs("*** empty family ***\n", stream);
+    REprintf("*** empty family ***\n");
   }
 }
 
@@ -749,19 +747,19 @@ void print_family(Family *f, int m, FILE *stream) {
   int i, j, ia1, ia2;
   Offspring *child;
   if (!f) return;
-  fprintf(stream, "Pedigree %8ld:\n     Father      Mother", f->pedigree);
+  fprintf(stream, "Pedigree %8d:\n     Father      Mother", f->pedigree);
   for (i=0, child=f->children; child && i<4; child=child->next, i++)
     fprintf(stream, "  Offspring%3d", i+1);
   if (child)
     fprintf(stream, ">\n");
   else
     fprintf(stream, "\n"); 
-  fprintf(stream, "%8ld Ph %8ld Ph", f->father_id, f->mother_id);
+  fprintf(stream, "%8d Ph %8d Ph", f->father_id, f->mother_id);
   for (i=0, child=f->children; child && i<4; child=child->next, i++) {
     if (child->affected==2) 
-      fprintf(stream, "   %8ld*Iv", child->id);
+      fprintf(stream, "   %8d*Iv", child->id);
     else
-      fprintf(stream, "   %8ld Iv", child->id);
+      fprintf(stream, "   %8d Iv", child->id);
   }
   fprintf(stream, "\n");
   /* Print markers, plus phase and inheritance vectors */
@@ -786,9 +784,9 @@ void print_family(Family *f, int m, FILE *stream) {
 /* Print a warning to stderr */
 
 void warn(char *message, Family *f) {
-  fputs(message, stderr);
-  fputs(": ", stderr);
-  show_family(f, stderr);
+  REprintf(message);
+  REprintf(": ");
+  show_family(f);
 }
 
 /* Count families */

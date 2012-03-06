@@ -40,7 +40,7 @@ haplotype is coded as zero.
 }
 \references{
 Clayton, D. and Jones, H. (1999) Transmission/disequilibrium tests for extended marker
-haplotypes. Am.J.Hum.Gen., 65:1161-1169.
+haplotypes. Am. J. Hum. Gen., 65:1161-1169.
 }
 \seealso{
 \code{\link{tdt.select}}, \code{\link{tdt.rr}}, \code{\link{tdt.quad}}
@@ -58,6 +58,8 @@ haplotypes. Am.J.Hum.Gen., 65:1161-1169.
   hap.use <- tdt.select(haps, markers=1:2)
   table(hap.use$trans)
   table(hap.use$untrans)
+  rr <- tdt.rr(hap.use)
+  rr
 
 # To do a Geary_Moran test on a 10 marker haplotype
   gaps <- c(0, 50, 60, 80, 20, 30, 50, 40, 50, 100, 0)
@@ -67,9 +69,6 @@ haplotypes. Am.J.Hum.Gen., 65:1161-1169.
   test <- tdt.quad(hap.use, nsim=10000, keep=T)
   test 
   summary(test$sim)
-
-  rr <- tdt.rr(hap.use)
-  rr
 
 }}
 \keyword{htest}

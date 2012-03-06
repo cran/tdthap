@@ -1,3 +1,4 @@
+#include <R.h>
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -23,10 +24,10 @@ void asran_seed(int, int, int);
 */
 
 
-int tdt_quad(long *nhap, long *ntran, char **haps, long *tr, long *un, 
-	      long *nsamp, long *funct, long *keep, long *seeds, double *res) {
+int tdt_quad(int *nhap, int *ntran, char **haps, int *tr, int *un, 
+	     int *nsamp, int *funct, int *keep, int *seeds, double *res) {
   /*FILE *scratch_file;*/
-  long nh, nt, nl, nmc, i, j, ij, nnz=0, inz; 
+  int nh, nt, nl, nmc, i, j, ij, nnz=0, inz; 
   int a, b, c, *hmat, *ha, *hb;
   char *ch, **h;
   double *score, s, test, obst=0.0;
@@ -158,14 +159,14 @@ int tdt_quad(long *nhap, long *ntran, char **haps, long *tr, long *un,
   
   /* Insufficient dynamic memory */
 
-	      noroom:
-  fprintf(stderr, "*** tdt.c *** Insufficient memory\n");
+noroom:
+  REprintf("*** tdt.c *** Insufficient memory\n");
   res[0] = -1.0;
   goto tidyup;
 
   /* Return dynamic storage space */
   
-	      tidyup:
+tidyup:
   for (inz = 0, s_this=s_list; inz<nnz && s_this; inz++) {
     s_last = s_this;
     s_this = s_this->next;
@@ -178,7 +179,7 @@ int tdt_quad(long *nhap, long *ntran, char **haps, long *tr, long *un,
 
 /* Applied Statistics random number generator */
   
-static long ix, iy, iz;
+static int ix, iy, iz;
 
 void asran_seed(int i1, int i2, int i3)
    {

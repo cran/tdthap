@@ -6,8 +6,7 @@
 
 "hap.transmit" <- function(pedfile, markers=1:((ncol(pedfile)-6)/2),
                          multiple.cases=0, use.affected=TRUE) {
-  if (!is.loaded("hap_transmit"))
-    stop("hap_transmit C-function not loaded")
+  if (!is.loaded("hap_transmit")) stop("hap_transmit C-function not loaded")
   n <- nrow(pedfile)
   m <- length(markers)
   select <- rep(2*markers, rep(2,m)) + rep(5:6, m)
