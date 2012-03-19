@@ -64,7 +64,7 @@ haplotypes. Am. J. Hum. Gen., 65:1161-1169.
 # To do a Geary_Moran test on a 10 marker haplotype
   gaps <- c(0, 50, 60, 80, 20, 30, 50, 40, 50, 100, 0)
   set.similarity(nloci=10, spacing=gaps, power=0.5)
-  get.similarity()
+  get.similarity(nloci=10)
 
   test <- tdt.quad(hap.use, nsim=10000, keep=T)
   test 
