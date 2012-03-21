@@ -1,3 +1,9 @@
+V1.1-5
+
+2012-3-21	Add inst/tests according to hap.transmit documentation example
+		Move README into inst/doc
+2012-3-20	Fix VignetteIndexEntry and URL for the AJHG paper in tdthap-paper.Rnw
+
 v1.1-4
 
 2012-3-19	Revise the example slightly

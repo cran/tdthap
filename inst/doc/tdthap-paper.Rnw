@@ -1,5 +1,5 @@
-%% \VignetteIndexEntry{Imputation of missing covariates under a multivariate linear mixed model}
-%% \Vignettekeywords{multiple imputation, multivariate linear mixed model}
+%% \VignetteIndexEntry{Disequilibrium Tests for Extended Marker Haplotypesl}
+%% \Vignettekeywords{genetic association, family studies}
 %% \VignettePackage{tdthap}
 
 \documentclass[12pt]{article}
@@ -33,7 +33,7 @@ Clayton D, Jones H (1999). Transmission/disequilibrium tests for extended marker
 
 \vskip 0.5cm
 
-which is now freely available from \url{http://www.ncbi.nlm.nih.gov/pmc/articles/PMC1288248/pdf/AJHGv65p1148.pdf}
+which is now freely available from \url{http://www.ncbi.nlm.nih.gov/pmc/articles/PMC1288249/pdf/AJHGv65p1161.pdf}
 
 \section{Paper}
 The paper starts from next page.
