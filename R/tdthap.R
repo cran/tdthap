@@ -155,11 +155,11 @@
   res
 }
 
-"get.similarity" <- function(nl=1) {
+"get.similarity" <- function(nloci=1) {
   if (!is.loaded("get_tdt_similarity"))
     stop("get_tdt_similarity C-function not loaded")
   res <- .C("get_tdt_similarity", nloci=as.integer(1), 
-            spacing=as.double(rep(1,nl+1)), focus=as.integer(1),
+            spacing=as.double(rep(1,nloci+1)), focus=as.integer(1),
             power=as.double(1),PACKAGE="tdthap")
   res
 }

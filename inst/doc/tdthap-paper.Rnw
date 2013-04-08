@@ -1,6 +1,6 @@
-%% \VignetteIndexEntry{Disequilibrium Tests for Extended Marker Haplotypesl}
-%% \Vignettekeywords{genetic association, family studies}
 %% \VignettePackage{tdthap}
+%% \VignetteIndexEntry{Disequilibrium Tests for Extended Marker Haplotypes}
+%% \Vignettekeywords{genetic association, family studies}
 
 \documentclass[12pt]{article}
 \usepackage{Sweave,hyperref,pdfpages}

@@ -4,10 +4,10 @@
 Interogate similarity function for Geary-Moran TDT tests 
 }
 \usage{
-get.similarity(nl=1)
+get.similarity(nloci=1)
 }
 \arguments{
-\item{nl}{
+\item{nloci}{
 The number of loci.
 }}
 \description{

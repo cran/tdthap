@@ -51,7 +51,7 @@ haplotypes. Am. J. Hum. Gen., 65:1161-1169.
 # and build haplotypes using the markers which appear third, second, and 
 # first in the pedfile. 
 
-  filespec <- file.path(.path.package("tdthap"),"tests","test.ped")
+  filespec <- system.file("tests/test.ped")
   ped <- read.table(filespec)
 
   haps <- hap.transmit(ped, markers=c(3,2,1))
