@@ -1,3 +1,11 @@
+V1.1-7
+
+2013-12-10	date stamp for CRAN submission
+                Revise hap.transmit.Rd according to CRAN results
+2013-11-23	add package="tdthap" to hap.transmit documentation example following a query from
+		Voorrips, Roeland <roeland.voorrips@wur.nl>
+2013-9-30	mv inst/doc vignettes
+
 v1.1-6
 
 2013-4-08	Replace file.path(package.path()) with system.file

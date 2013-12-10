@@ -4,7 +4,8 @@
 Build parental haplotypes in nuclear families
 }
 \usage{
-hap.transmit(pedfile, markers=1:((ncol(pedfile) - 6)/2), multiple.cases=0, use.affected=TRUE)
+hap.transmit(pedfile, markers=1:((ncol(pedfile) - 6)/2),
+             multiple.cases=0, use.affected=TRUE)
 }
 \arguments{
 \item{pedfile}{
@@ -51,7 +52,7 @@ haplotypes. Am. J. Hum. Gen., 65:1161-1169.
 # and build haplotypes using the markers which appear third, second, and 
 # first in the pedfile. 
 
-  filespec <- system.file("tests/test.ped")
+  filespec <- system.file("tests/test.ped", package="tdthap")
   ped <- read.table(filespec)
 
   haps <- hap.transmit(ped, markers=c(3,2,1))
