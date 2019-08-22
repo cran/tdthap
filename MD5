@@ -1,12 +1,12 @@
-ef2043ba7d03ef827ca1c563e57f7b9f *ChangeLog
-e0afbd1791f74b025300777bf19724f3 *DESCRIPTION
+54e86233cb5969774efc0192e7bf4551 *ChangeLog
+0eeab500e3a3643503898b2d60e883cd *DESCRIPTION
 aa717277a351d180ed58170e4ba674d3 *INDEX
 357798fe59fcbb28b0498496ec36ef83 *NAMESPACE
-99fe95cd85bb021d4aed9fd17102ef6d *R/tdthap.R
+f73434fea26545f07d6a16fb887b5351 *R/tdthap.R
 9b4e108ef20ac57254da3bacfcbab2f9 *R/zzz.R
-5fe6ffcae490529a07ba026ae22b7d69 *build/vignette.rds
+263770c2dcd0de6f5c53f378857e48b9 *build/vignette.rds
 8fde10730d1c96bd7095933a8c768567 *inst/doc/tdthap-paper.Rnw
-03b202414040582e441a1ab43e9c72f3 *inst/doc/tdthap-paper.pdf
+c0d03dbf976633a9b553cc9445e56398 *inst/doc/tdthap-paper.pdf
 aa72bf58619619fbfd496db5b1a87ded *inst/tests/references.txt
 84a4330470fd89ff3f550564c5d16223 *inst/tests/test.R
 88279250007f0204e8cbe93accdf2fb5 *inst/tests/test.ped
@@ -16,7 +16,7 @@ f152b298a76849adef6e8ff7d2fe418a *man/hap.transmit.Rd
 df1c8c1120da0815dd32c1212aaecc23 *man/tdt.quad.Rd
 ee4485e9f7076356f19991cd4b263687 *man/tdt.rr.Rd
 57a7957aa3e6760c1de3abff22464100 *man/tdt.select.Rd
-cf413113306dd313c5f43c80ec64643c *src/nuc_fam.c
+984a492b2b5df858154bb88c9bf28aee *src/nuc_fam.c
 85370023701e1dd40a73f96a29ff6f08 *src/nuc_fam.h
 89f83116dbb7bbaf52bb78defaa7d8d1 *src/package_native_routine_registration_skeleton.c
 1652446626eecc831ddc76575da39a21 *src/similar.c
