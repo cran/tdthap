@@ -1,0 +1,9 @@
+%\VignetteIndexEntry{Disequilibrium Tests for Extended Marker Haplotypes}
+%\VignetteEngine{utils::Sweave}
+%\VignetteEncoding{UTF-8}
+
+\documentclass[oneside]{article}
+\usepackage{pdfpages}
+\begin{document}
+\includepdf[pages=-,pagecommand={},fitpaper=true]{clayton99.pdf}
+\end{document}
